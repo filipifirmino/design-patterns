@@ -14,12 +14,16 @@ public class DirectorBuilderMessage
 
     public void MessageConstruct(string body, int priority, string idempotenceKey, string header)
     {
-        _builder.SetBody(body);
-        _builder.SetPriority(priority);
-        _builder.SetIdempotenceKey(idempotenceKey);
-        _builder.SerHeader(header);
+        _builder.SetBody(body)
+            .SetPriority(priority)
+            .SetIdempotenceKey(idempotenceKey)
+            .SetHeader(header);
     }
     
-    public Message Build() => _builder.Build();
+    public Message Build() {
+        var result = _builder.Build();
+        _builder.Reset();
+        return result;
+    }
     
 }

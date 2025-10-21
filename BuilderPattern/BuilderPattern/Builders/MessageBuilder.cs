@@ -5,7 +5,7 @@ namespace BuilderPattern.Builders;
 
 public class MessageBuilder : IMessageBuilder
 {
-    private readonly Message _message = new ();
+    private Message _message = new ();
 
     public MessageBuilder SetBody(string body)
     {
@@ -13,7 +13,7 @@ public class MessageBuilder : IMessageBuilder
         return this;
     }
 
-    public MessageBuilder SerHeader(string header)
+    public MessageBuilder SetHeader(string header)
     {
        _message.Header = header;
        return this;
@@ -32,4 +32,8 @@ public class MessageBuilder : IMessageBuilder
     }
 
     public Message Build() => _message;
+    public void Reset()
+    {
+        _message = new Message();
+    }
 }

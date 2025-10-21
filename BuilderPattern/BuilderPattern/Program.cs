@@ -8,5 +8,10 @@ var message = new DirectorBuilderMessage(builder);
 message.MessageConstruct("json", 1, "key", "header");
 var jsonMessage = message.Build();
 
+message.MessageConstruct("xml", 2, "key", "header");
+var xmlMessage = message.Build();
+
 Publisher(jsonMessage);
-void Publisher(Message msg) => Console.WriteLine($"Publishing the message: {msg.Priority}");
+Publisher(xmlMessage);
+
+void Publisher(Message msg) => Console.WriteLine($"Publishing the message: {msg.Body}");
