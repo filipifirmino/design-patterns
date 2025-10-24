@@ -69,6 +69,12 @@ BuilderPattern/
 └── Program.cs                        # Exemplo de uso
 ```
 
+### 📦 Namespaces Utilizados
+
+- `BuilderPattern.Model` - Contém a classe Message
+- `BuilderPattern.Interface` - Contém a interface IMessageBuilder
+- `BuilderPattern.Builders` - Contém as implementações concretas
+
 ## 🚀 Como Usar
 
 ### Exemplo 1: Criando Uma Mensagem
@@ -77,7 +83,7 @@ BuilderPattern/
 using BuilderPattern.Builders;
 using BuilderPattern.Model;
 
-// Cria o builder
+// Cria o builder e o director
 var builder = new MessageBuilder();
 var director = new DirectorBuilderMessage(builder);
 
@@ -96,18 +102,18 @@ var message = director.Build();
 Publisher(message);
 ```
 
-### Exemplo 2: Múltiplas Mensagens
+### Exemplo 2: Múltiplas Mensagens (Como no Program.cs)
 
 ```csharp
 var builder = new MessageBuilder();
 var director = new DirectorBuilderMessage(builder);
 
 // Mensagem JSON
-director.MessageConstruct("json", 1, "key-1", "application/json");
+director.MessageConstruct("json", 1, "key", "header");
 var jsonMessage = director.Build();
 
 // Mensagem XML (reutilizando o mesmo builder)
-director.MessageConstruct("xml", 2, "key-2", "application/xml");
+director.MessageConstruct("xml", 2, "key", "header");
 var xmlMessage = director.Build();
 
 // Cada mensagem é independente!
@@ -207,17 +213,21 @@ public class DirectorBuilderMessage
 {
     private readonly IMessageBuilder _builder;
 
+    public DirectorBuilderMessage(IMessageBuilder builder)
+    {
+        _builder = builder;
+    }
+
     public void MessageConstruct(string body, int priority, 
                                  string idempotenceKey, string header)
     {
         _builder.SetBody(body)
-                .SetPriority(priority)
-                .SetIdempotenceKey(idempotenceKey)
-                .SetHeader(header);
+            .SetPriority(priority)
+            .SetIdempotenceKey(idempotenceKey)
+            .SetHeader(header);
     }
 
-    public Message Build()
-    {
+    public Message Build() {
         var result = _builder.Build();
         _builder.Reset(); // Prepara para próxima construção
         return result;
@@ -229,6 +239,7 @@ public class DirectorBuilderMessage
 - 🎭 Define a **ordem** de construção
 - ♻️ Gerencia o **reset** automático
 - 🎯 Fornece API de **alto nível**
+- 🔧 Recebe o builder via **construtor** (Dependency Injection)
 
 ## 📊 Diagrama de Classes
 
@@ -291,6 +302,14 @@ builder.SetPriority(1)    // Passo 1
        .SetBody("data")   // Passo 2
        .Build();          // Finaliza
 ```
+
+### 🔧 Características da Implementação Atual
+
+- ✅ **Dependency Injection**: Director recebe builder via construtor
+- ✅ **Fluent Interface**: Métodos retornam `this` para encadeamento
+- ✅ **Reset Automático**: Director gerencia o reset após cada build
+- ✅ **Namespaces Organizados**: Separação clara de responsabilidades
+- ✅ **C# 9+ Features**: Uso de `new()` para inicialização simplificada
 
 ### 🔄 Reutilização
 O mesmo builder pode criar diferentes objetos:
@@ -402,6 +421,27 @@ dotnet run
 # Publishing the message: xml
 ```
 
+### 📋 Código Real do Program.cs
+
+```1:17:BuilderPattern/BuilderPattern/Program.cs
+using BuilderPattern.Builders;
+using BuilderPattern.Model;
+
+var builder = new MessageBuilder();
+var message = new DirectorBuilderMessage(builder);
+
+message.MessageConstruct("json", 1, "key", "header");
+var jsonMessage = message.Build();
+
+message.MessageConstruct("xml", 2, "key", "header");
+var xmlMessage = message.Build();
+
+Publisher(jsonMessage);
+Publisher(xmlMessage);
+
+void Publisher(Message msg) => Console.WriteLine($"Publishing the message: {msg.Body}");
+```
+
 ## 📖 Referências
 
 - **Design Patterns: Elements of Reusable Object-Oriented Software** - Gang of Four
@@ -417,6 +457,9 @@ dotnet run
 3. **Adicione validações**: Torne o builder mais robusto
 4. **Implemente imutabilidade**: Use `init` nas propriedades
 5. **Crie builders especializados**: JsonMessageBuilder, XmlMessageBuilder, etc.
+6. **Teste o reset**: Verifique se objetos são independentes após reset
+7. **Analise o Program.cs**: Veja como o padrão é usado na prática
+8. **Experimente diferentes ordens**: Teste se a ordem dos métodos importa
 
 ---
 

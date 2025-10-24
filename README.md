@@ -19,10 +19,51 @@ Cada **branch** representa a implementação de um **padrão específico**, cont
 | Branch | Padrão | Categoria | Status |
 |--------|--------|-----------|--------|
 | `Builder-branch` | Builder Pattern | Criacional | ✅ Implementado |
+| `observer-branch` | Observer Pattern | Comportamental | ✅ Implementado |
 | `Factory-branch` | Factory Pattern | Criacional | 🔜 Em breve |
 | `Singleton-branch` | Singleton Pattern | Criacional | 🔜 Em breve |
-| `Observer-branch` | Observer Pattern | Comportamental | 🔜 Em breve |
 | `Strategy-branch` | Strategy Pattern | Comportamental | 🔜 Em breve |
+
+## 🎯 Padrões Implementados
+
+### 🏗️ Builder Pattern (`Builder-branch`)
+**Categoria**: Criacional  
+**Problema**: Construção de objetos complexos com múltiplos parâmetros  
+**Solução**: Builder com Director para construção passo a passo  
+**Cenário**: Sistema de mensageria (RabbitMQ/Kafka)  
+**Características**:
+- ✅ Fluent Interface
+- ✅ Director com Dependency Injection
+- ✅ Reset automático
+- ✅ Namespaces organizados
+
+### 👁️ Observer Pattern (`observer-branch`)
+**Categoria**: Comportamental  
+**Problema**: Notificar múltiplos objetos sobre mudanças de estado  
+**Solução**: Subject notifica Observers automaticamente  
+**Cenário**: Sistema de inventário com serviços de notificação  
+**Características**:
+- ✅ Product como Subject
+- ✅ Três serviços como Observers (Analytics, Inventory, Notification)
+- ✅ C# 12 collection expressions
+- ✅ Interfaces bem definidas (IObserver, ISubject)
+
+## 🔜 Próximos Padrões
+
+### 🏭 Factory Pattern (`Factory-branch`)
+**Categoria**: Criacional  
+**Foco**: Criação de objetos sem especificar classes concretas  
+**Cenário Planejado**: Sistema de criação de diferentes tipos de documentos
+
+### 🔒 Singleton Pattern (`Singleton-branch`)
+**Categoria**: Criacional  
+**Foco**: Garantir única instância de uma classe  
+**Cenário Planejado**: Logger global ou configuração de aplicação
+
+### 🎯 Strategy Pattern (`Strategy-branch`)
+**Categoria**: Comportamental  
+**Foco**: Algoritmos intercambiáveis em tempo de execução  
+**Cenário Planejado**: Sistema de pagamento com diferentes métodos
 
 ## 🚀 Como Usar Este Repositório
 
@@ -37,9 +78,35 @@ cd design-patterns
 
 # Mude para a branch do padrão desejado
 git checkout Builder-branch
+# ou
+git checkout observer-branch
 
 # Explore a implementação
 cd BuilderPattern
+# ou
+cd ObserverPattern
+```
+
+### Exemplos de Uso
+
+#### Builder Pattern
+```csharp
+var builder = new MessageBuilder();
+var director = new DirectorBuilderMessage(builder);
+
+director.MessageConstruct("json payload", 1, "unique-key", "application/json");
+var message = director.Build();
+```
+
+#### Observer Pattern
+```csharp
+var product = new Product { Name = "Notebook", Price = 1000, Quantity = 0 };
+
+product.Attach(new AnalyticsService());
+product.Attach(new InventoryService());
+product.Attach(new NotificationService());
+
+product.Restock(100); // Notifica todos os observers automaticamente
 ```
 
 ### Estudando Múltiplos Padrões
@@ -50,6 +117,7 @@ git branch -a
 
 # Alterne entre diferentes padrões
 git checkout Builder-branch
+git checkout observer-branch
 git checkout Factory-branch
 ```
 
@@ -73,8 +141,8 @@ Focados na composição de classes e objetos.
 
 ### 🎭 Padrões Comportamentais
 Focados na comunicação entre objetos.
+- **Observer** - Notificação de mudanças (✅ Implementado)
 - **Strategy** - Algoritmos intercambiáveis
-- **Observer** - Notificação de mudanças
 - **Command** - Encapsular requisições
 - **State** - Comportamento baseado em estado
 - **Template Method** - Estrutura de algoritmo
@@ -84,8 +152,8 @@ Focados na comunicação entre objetos.
 ```
 main (documentação geral)
   ├── Builder-branch (implementação isolada do Builder)
-  ├── Factory-branch (implementação isolada do Factory)
-  └── Strategy-branch (implementação isolada da Strategy)
+  ├── observer-branch (implementação isolada do Observer)
+  └── Factory-branch (implementação isolada do Factory)
 ```
 
 **Vantagens:**
@@ -96,10 +164,11 @@ main (documentação geral)
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **Linguagem**: C# 9.0+
+- **Linguagem**: C# 12.0+
 - **Framework**: .NET 9.0
 - **IDE**: JetBrains Rider / Visual Studio
 - **Controle de Versão**: Git
+- **Features Modernas**: Collection expressions, Primary constructors, Pattern matching
 
 ## 📝 Convenções do Código
 
