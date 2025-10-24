@@ -32,6 +32,7 @@ public class MessageBuilder : IMessageBuilder
     }
 
     public Message Build() => _message;
+    
     public void Reset()
     {
         _message = new Message();
