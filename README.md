@@ -22,7 +22,7 @@ Cada **branch** representa a implementação de um **padrão específico**, cont
 | `observer-branch` | Observer Pattern | Comportamental | ✅ Implementado |
 | `Factory-branch` | Factory Pattern | Criacional | 🔜 Em breve |
 | `Singleton-branch` | Singleton Pattern | Criacional | 🔜 Em breve |
-| `Strategy-branch` | Strategy Pattern | Comportamental | 🔜 Em breve |
+| `Strategy-branch` | Strategy Pattern | Comportamental | ✅ Implementado |
 
 ## 🎯 Padrões Implementados
 
@@ -48,6 +48,19 @@ Cada **branch** representa a implementação de um **padrão específico**, cont
 - ✅ C# 12 collection expressions
 - ✅ Interfaces bem definidas (IObserver, ISubject)
 
+### 🎯 Strategy Pattern (`Strategy-branch`)
+**Categoria**: Comportamental  
+**Problema**: Algoritmos intercambiáveis em tempo de execução  
+**Solução**: Interface Strategy com implementações concretas  
+**Cenário**: Sistema de cálculo de frete com diferentes modalidades  
+**Características**:
+- ✅ Interface IShippingStrategy bem definida
+- ✅ Três estratégias concretas (Economy, Express, Sedex)
+- ✅ ShippingService como classe Context
+- ✅ Troca dinâmica de estratégias via SetStrategy()
+- ✅ Estrutura organizada com namespaces separados
+- ✅ Cálculo baseado em dimensões e peso do pacote
+
 ## 🔜 Próximos Padrões
 
 ### 🏭 Factory Pattern (`Factory-branch`)
@@ -63,7 +76,7 @@ Cada **branch** representa a implementação de um **padrão específico**, cont
 ### 🎯 Strategy Pattern (`Strategy-branch`)
 **Categoria**: Comportamental  
 **Foco**: Algoritmos intercambiáveis em tempo de execução  
-**Cenário Planejado**: Sistema de pagamento com diferentes métodos
+**Cenário Implementado**: Sistema de cálculo de frete com diferentes modalidades
 
 ## 🚀 Como Usar Este Repositório
 
@@ -80,11 +93,15 @@ cd design-patterns
 git checkout Builder-branch
 # ou
 git checkout observer-branch
+# ou
+git checkout Strategy-branch
 
 # Explore a implementação
 cd BuilderPattern
 # ou
 cd ObserverPattern
+# ou
+cd StrategyPattern
 ```
 
 ### Exemplos de Uso
@@ -109,6 +126,24 @@ product.Attach(new NotificationService());
 product.Restock(100); // Notifica todos os observers automaticamente
 ```
 
+#### Strategy Pattern
+```csharp
+var package = new Package 
+{ 
+    Weight = 10, 
+    Height = 20, 
+    Width = 15, 
+    Depth = 5 
+};
+
+var shippingService = new ShippingService(new EconomyStrategy());
+var cost = shippingService.Calculate(package);
+
+// Troca para estratégia expressa
+shippingService.SetStrategy(new ExpressStrategy());
+var expressCost = shippingService.Calculate(package);
+```
+
 ### Estudando Múltiplos Padrões
 
 ```bash
@@ -118,6 +153,7 @@ git branch -a
 # Alterne entre diferentes padrões
 git checkout Builder-branch
 git checkout observer-branch
+git checkout Strategy-branch
 git checkout Factory-branch
 ```
 
@@ -142,7 +178,7 @@ Focados na composição de classes e objetos.
 ### 🎭 Padrões Comportamentais
 Focados na comunicação entre objetos.
 - **Observer** - Notificação de mudanças (✅ Implementado)
-- **Strategy** - Algoritmos intercambiáveis
+- **Strategy** - Algoritmos intercambiáveis (✅ Implementado)
 - **Command** - Encapsular requisições
 - **State** - Comportamento baseado em estado
 - **Template Method** - Estrutura de algoritmo
@@ -153,6 +189,7 @@ Focados na comunicação entre objetos.
 main (documentação geral)
   ├── Builder-branch (implementação isolada do Builder)
   ├── observer-branch (implementação isolada do Observer)
+  ├── Strategy-branch (implementação isolada do Strategy)
   └── Factory-branch (implementação isolada do Factory)
 ```
 

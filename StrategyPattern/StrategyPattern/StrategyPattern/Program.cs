@@ -1,9 +1,9 @@
-﻿ // See https://aka.ms/new-console-template for more information
+﻿ //See https://aka.ms/new-console-template for more information
  
  using StrategyPattern.Models;
  using StrategyPattern.Services;
  using StrategyPattern.Strategies;
-
+ 
  var calculatorService = new ShippingService(new EconomyStrategy());
  
     var package = new Package
