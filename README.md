@@ -20,7 +20,7 @@ Cada **branch** representa a implementação de um **padrão específico**, cont
 |--------|--------|-----------|--------|
 | `Builder-branch` | Builder Pattern | Criacional | ✅ Implementado |
 | `observer-branch` | Observer Pattern | Comportamental | ✅ Implementado |
-| `Factory-branch` | Factory Pattern | Criacional | 🔜 Em breve |
+| `Factory-branch` | Factory Pattern | Criacional | ✅ Implementado |
 | `Singleton-branch` | Singleton Pattern | Criacional | 🔜 Em breve |
 | `Strategy-branch` | Strategy Pattern | Comportamental | ✅ Implementado |
 
@@ -61,22 +61,26 @@ Cada **branch** representa a implementação de um **padrão específico**, cont
 - ✅ Estrutura organizada com namespaces separados
 - ✅ Cálculo baseado em dimensões e peso do pacote
 
-## 🔜 Próximos Padrões
-
 ### 🏭 Factory Pattern (`Factory-branch`)
 **Categoria**: Criacional  
-**Foco**: Criação de objetos sem especificar classes concretas  
-**Cenário Planejado**: Sistema de criação de diferentes tipos de documentos
+**Problema**: Criação de objetos sem especificar classes concretas  
+**Solução**: Factory Method com classes abstratas e concretas  
+**Cenário**: Sistema de pagamento com diferentes métodos e impostos  
+**Características**:
+- ✅ Factory abstrata `FactoryPayment` com método abstract `CreatePayment()`
+- ✅ Três factories concretas (BankSlip, CreditCard, PayPal)
+- ✅ Três tipos de impostos intercambiáveis (TaxFree, FlatTax, VariableTax)
+- ✅ Injeção de dependência com ITax nas factories
+- ✅ Interface IPayment bem definida
+- ✅ Cliente desacoplado das classes concretas de pagamento
+- ✅ C# 12 primary constructors utilizado
+
+## 🔜 Próximos Padrões
 
 ### 🔒 Singleton Pattern (`Singleton-branch`)
 **Categoria**: Criacional  
 **Foco**: Garantir única instância de uma classe  
 **Cenário Planejado**: Logger global ou configuração de aplicação
-
-### 🎯 Strategy Pattern (`Strategy-branch`)
-**Categoria**: Comportamental  
-**Foco**: Algoritmos intercambiáveis em tempo de execução  
-**Cenário Implementado**: Sistema de cálculo de frete com diferentes modalidades
 
 ## 🚀 Como Usar Este Repositório
 
@@ -95,6 +99,8 @@ git checkout Builder-branch
 git checkout observer-branch
 # ou
 git checkout Strategy-branch
+# ou
+git checkout Factory-branch
 
 # Explore a implementação
 cd BuilderPattern
@@ -102,6 +108,8 @@ cd BuilderPattern
 cd ObserverPattern
 # ou
 cd StrategyPattern
+# ou
+cd FactoryPattern
 ```
 
 ### Exemplos de Uso
@@ -144,6 +152,23 @@ shippingService.SetStrategy(new ExpressStrategy());
 var expressCost = shippingService.Calculate(package);
 ```
 
+#### Factory Pattern
+```csharp
+// Criar taxas
+var freeTax = new TaxFree();
+var flatTax = new FlatTax();
+var variableTax = new VariableTax();
+
+// Criar pagamentos através de factories
+var paypalFactory = new FactoryPaymentPaypal(freeTax);
+var paypalClient = new Client(paypalFactory);
+paypalClient.Pay(1000m);
+
+var cardFactory = new FactoryPaymentCreditCard(flatTax);
+var cardClient = new Client(cardFactory);
+cardClient.Pay(500m);
+```
+
 ### Estudando Múltiplos Padrões
 
 ```bash
@@ -155,14 +180,15 @@ git checkout Builder-branch
 git checkout observer-branch
 git checkout Strategy-branch
 git checkout Factory-branch
+git checkout Singleton-branch
 ```
 
 ## 📖 Categorias de Padrões
 
 ### 🏗️ Padrões Criacionais
 Focados na criação de objetos de forma flexível e reutilizável.
-- **Builder** - Construção de objetos complexos passo a passo
-- **Factory Method** - Interface para criar objetos
+- **Builder** - Construção de objetos complexos passo a passo (✅ Implementado)
+- **Factory Method** - Interface para criar objetos (✅ Implementado)
 - **Singleton** - Garante única instância de uma classe
 - **Prototype** - Clonagem de objetos
 - **Abstract Factory** - Famílias de objetos relacionados
@@ -190,7 +216,8 @@ main (documentação geral)
   ├── Builder-branch (implementação isolada do Builder)
   ├── observer-branch (implementação isolada do Observer)
   ├── Strategy-branch (implementação isolada do Strategy)
-  └── Factory-branch (implementação isolada do Factory)
+  ├── Factory-branch (implementação isolada do Factory)
+  └── Singleton-branch (implementação isolada do Singleton)
 ```
 
 **Vantagens:**
