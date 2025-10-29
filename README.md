@@ -8,25 +8,25 @@ Este repositório foi criado com o objetivo de servir como **material de referê
 
 ### 🎯 Filosofia do Repositório
 
-Cada **branch** representa a implementação de um **padrão específico**, contendo:
+Cada padrão implementado contém:
 - ✅ Código funcional e comentado
 - ✅ Exemplo prático de uso
 - ✅ Documentação explicativa
 - ✅ Implementação focada em simplicidade e clareza
 
-## 🌳 Estrutura de Branches
+## 🌳 Padrões Implementados
 
-| Branch | Padrão | Categoria | Status |
-|--------|--------|-----------|--------|
-| `Builder-branch` | Builder Pattern | Criacional | ✅ Implementado |
-| `observer-branch` | Observer Pattern | Comportamental | ✅ Implementado |
-| `Factory-branch` | Factory Pattern | Criacional | ✅ Implementado |
-| `Singleton-branch` | Singleton Pattern | Criacional | 🔜 Em breve |
-| `Strategy-branch` | Strategy Pattern | Comportamental | ✅ Implementado |
+| Padrão | Categoria | Status |
+|--------|-----------|--------|
+| Builder Pattern | Criacional | ✅ Implementado |
+| Observer Pattern | Comportamental | ✅ Implementado |
+| Factory Pattern | Criacional | ✅ Implementado |
+| Strategy Pattern | Comportamental | ✅ Implementado |
+| Facade Pattern | Estrutural | ✅ Implementado |
 
 ## 🎯 Padrões Implementados
 
-### 🏗️ Builder Pattern (`Builder-branch`)
+### 🏗️ Builder Pattern
 **Categoria**: Criacional  
 **Problema**: Construção de objetos complexos com múltiplos parâmetros  
 **Solução**: Builder com Director para construção passo a passo  
@@ -37,7 +37,7 @@ Cada **branch** representa a implementação de um **padrão específico**, cont
 - ✅ Reset automático
 - ✅ Namespaces organizados
 
-### 👁️ Observer Pattern (`observer-branch`)
+### 👁️ Observer Pattern
 **Categoria**: Comportamental  
 **Problema**: Notificar múltiplos objetos sobre mudanças de estado  
 **Solução**: Subject notifica Observers automaticamente  
@@ -48,7 +48,7 @@ Cada **branch** representa a implementação de um **padrão específico**, cont
 - ✅ C# 12 collection expressions
 - ✅ Interfaces bem definidas (IObserver, ISubject)
 
-### 🎯 Strategy Pattern (`Strategy-branch`)
+### 🎯 Strategy Pattern
 **Categoria**: Comportamental  
 **Problema**: Algoritmos intercambiáveis em tempo de execução  
 **Solução**: Interface Strategy com implementações concretas  
@@ -61,7 +61,7 @@ Cada **branch** representa a implementação de um **padrão específico**, cont
 - ✅ Estrutura organizada com namespaces separados
 - ✅ Cálculo baseado em dimensões e peso do pacote
 
-### 🏭 Factory Pattern (`Factory-branch`)
+### 🏭 Factory Pattern
 **Categoria**: Criacional  
 **Problema**: Criação de objetos sem especificar classes concretas  
 **Solução**: Factory Method com classes abstratas e concretas  
@@ -75,12 +75,19 @@ Cada **branch** representa a implementação de um **padrão específico**, cont
 - ✅ Cliente desacoplado das classes concretas de pagamento
 - ✅ C# 12 primary constructors utilizado
 
-## 🔜 Próximos Padrões
-
-### 🔒 Singleton Pattern (`Singleton-branch`)
-**Categoria**: Criacional  
-**Foco**: Garantir única instância de uma classe  
-**Cenário Planejado**: Logger global ou configuração de aplicação
+### 🎭 Facade Pattern
+**Categoria**: Estrutural  
+**Problema**: Simplificar a interação com múltiplos subsistemas complexos  
+**Solução**: Interface unificada que esconde a complexidade dos subsistemas  
+**Cenário**: Sistema de compra de passagens aéreas com múltiplos serviços  
+**Características**:
+- ✅ TicketFacade como interface simplificada
+- ✅ Quatro subsistemas (CheckFlight, TaxCalculator, PaymentProcess, GenerateTicket)
+- ✅ Lógica completa de validação e processamento
+- ✅ Tratamento de erros integrado
+- ✅ Geração de tickets formatados com informações completas
+- ✅ Cálculo de taxas variáveis por destino
+- ✅ Validação de pagamento com limites e regras de negócio
 
 ## 🚀 Como Usar Este Repositório
 
@@ -93,16 +100,7 @@ git clone https://github.com/seu-usuario/design-patterns.git
 # Navegue até a pasta
 cd design-patterns
 
-# Mude para a branch do padrão desejado
-git checkout Builder-branch
-# ou
-git checkout observer-branch
-# ou
-git checkout Strategy-branch
-# ou
-git checkout Factory-branch
-
-# Explore a implementação
+# Explore a implementação desejada
 cd BuilderPattern
 # ou
 cd ObserverPattern
@@ -110,6 +108,8 @@ cd ObserverPattern
 cd StrategyPattern
 # ou
 cd FactoryPattern
+# ou
+cd FacadePattern
 ```
 
 ### Exemplos de Uso
@@ -169,18 +169,32 @@ var cardClient = new Client(cardFactory);
 cardClient.Pay(500m);
 ```
 
-### Estudando Múltiplos Padrões
+#### Facade Pattern
+```csharp
+// Criar instâncias dos serviços
+var services = CreateServices();
+var ticketFacade = new TicketFacade(
+    services.GenerateTicket,
+    services.CheckFlight,
+    services.TaxCalculator,
+    services.PaymentProcess
+);
 
-```bash
-# Liste todas as branches (padrões disponíveis)
-git branch -a
+// Criar voo e processar compra
+var flight = new Flight(
+    flightNumber: 123,
+    destination: "London",
+    departure: "12:00",
+    arrival: "13:00",
+    price: 100m
+);
 
-# Alterne entre diferentes padrões
-git checkout Builder-branch
-git checkout observer-branch
-git checkout Strategy-branch
-git checkout Factory-branch
-git checkout Singleton-branch
+// Facade simplifica toda a complexidade
+var purchaseSuccessful = ticketFacade.BuyTicket(flight);
+if (purchaseSuccessful)
+{
+    Console.WriteLine(ticketFacade.PrintTicket(flight));
+}
 ```
 
 ## 📖 Categorias de Padrões
@@ -197,7 +211,7 @@ Focados na criação de objetos de forma flexível e reutilizável.
 Focados na composição de classes e objetos.
 - **Adapter** - Compatibilidade entre interfaces
 - **Decorator** - Adicionar funcionalidades dinamicamente
-- **Facade** - Interface simplificada para subsistemas
+- **Facade** - Interface simplificada para subsistemas (✅ Implementado)
 - **Proxy** - Controle de acesso a objetos
 - **Composite** - Estruturas de árvore
 
@@ -209,22 +223,22 @@ Focados na comunicação entre objetos.
 - **State** - Comportamento baseado em estado
 - **Template Method** - Estrutura de algoritmo
 
-## 💡 Por Que Usar Branches?
+## 💡 Estrutura do Projeto
 
 ```
-main (documentação geral)
-  ├── Builder-branch (implementação isolada do Builder)
-  ├── observer-branch (implementação isolada do Observer)
-  ├── Strategy-branch (implementação isolada do Strategy)
-  ├── Factory-branch (implementação isolada do Factory)
-  └── Singleton-branch (implementação isolada do Singleton)
+design-patterns/
+  ├── BuilderPattern/      (implementação do Builder)
+  ├── ObserverPattern/     (implementação do Observer)
+  ├── StrategyPattern/     (implementação do Strategy)
+  ├── FactoryPattern/       (implementação do Factory)
+  └── FacadePattern/       (implementação do Facade)
 ```
 
 **Vantagens:**
-- 🎯 **Isolamento**: Cada padrão em seu próprio contexto
+- 🎯 **Isolamento**: Cada padrão em seu próprio diretório
 - 📦 **Simplicidade**: Sem interferência entre implementações
 - 🔍 **Foco**: Estude um padrão por vez
-- 🔄 **Comparação**: Use `git diff` entre branches para comparar abordagens
+- 📚 **Organização**: Fácil navegação e localização dos padrões
 
 ## 🛠️ Tecnologias Utilizadas
 
