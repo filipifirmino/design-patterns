@@ -23,6 +23,7 @@ Cada padrão implementado contém:
 | Factory Pattern | Criacional | ✅ Implementado |
 | Strategy Pattern | Comportamental | ✅ Implementado |
 | Facade Pattern | Estrutural | ✅ Implementado |
+| Decorator Pattern | Estrutural | ✅ Implementado |
 
 ## 🎯 Padrões Implementados
 
@@ -89,6 +90,20 @@ Cada padrão implementado contém:
 - ✅ Cálculo de taxas variáveis por destino
 - ✅ Validação de pagamento com limites e regras de negócio
 
+### 🎨 Decorator Pattern
+**Categoria**: Estrutural  
+**Problema**: Adicionar funcionalidades a objetos dinamicamente sem alterar sua estrutura  
+**Solução**: Decorators que envolvem e ampliam a funcionalidade de objetos existentes  
+**Cenário**: Sistema de notificações com múltiplos canais (Email, SMS, Push)  
+**Características**:
+- ✅ NotifierDecorator como classe base abstrata
+- ✅ Três decorators concretos (EmailNotifier, SmsNotifier, PushNotifier)
+- ✅ Composição dinâmica de funcionalidades
+- ✅ Possibilidade de combinar múltiplos decorators
+- ✅ Interface INotifier bem definida
+- ✅ Compartilhamento de comportamento entre decorators
+- ✅ Envio de notificações através de múltiplos canais simultaneamente
+
 ## 🚀 Como Usar Este Repositório
 
 ### Explorando um Padrão Específico
@@ -110,6 +125,8 @@ cd StrategyPattern
 cd FactoryPattern
 # ou
 cd FacadePattern
+# ou
+cd DecoratorPattern
 ```
 
 ### Exemplos de Uso
@@ -197,6 +214,27 @@ if (purchaseSuccessful)
 }
 ```
 
+#### Decorator Pattern
+```csharp
+// Criar notificador base
+INotifier notifier = new EmailNotifier();
+
+// Adicionar decorators (composição dinâmica)
+notifier = new SmsNotifier(notifier);
+notifier = new PushNotifier(notifier);
+
+// Enviar notificação através de todos os canais
+var message = new Message 
+{ 
+    Body = "Hello World", 
+    Subject = "teste@exemplo.com", 
+    PhoneNumber = "81 99999-9999" 
+};
+
+notifier.send(message);
+// Output: Email + SMS + Push notifications enviadas
+```
+
 ## 📖 Categorias de Padrões
 
 ### 🏗️ Padrões Criacionais
@@ -210,7 +248,7 @@ Focados na criação de objetos de forma flexível e reutilizável.
 ### 🔧 Padrões Estruturais
 Focados na composição de classes e objetos.
 - **Adapter** - Compatibilidade entre interfaces
-- **Decorator** - Adicionar funcionalidades dinamicamente
+- **Decorator** - Adicionar funcionalidades dinamicamente (✅ Implementado)
 - **Facade** - Interface simplificada para subsistemas (✅ Implementado)
 - **Proxy** - Controle de acesso a objetos
 - **Composite** - Estruturas de árvore
@@ -231,7 +269,8 @@ design-patterns/
   ├── ObserverPattern/     (implementação do Observer)
   ├── StrategyPattern/     (implementação do Strategy)
   ├── FactoryPattern/       (implementação do Factory)
-  └── FacadePattern/       (implementação do Facade)
+  ├── FacadePattern/       (implementação do Facade)
+  └── DecoratorPattern/    (implementação do Decorator)
 ```
 
 **Vantagens:**
